@@ -29,7 +29,7 @@ func Index(w http.ResponseWriter, r *http.Request) {
 		Value: "PORRROOO",
 	}
 	myJson, _ := json.Marshal(data)
-	fmt.Println(string(myJson))
+	w.Write(myJson)
 }
 
 func CmdKeys(w http.ResponseWriter, r *http.Request) {
@@ -38,7 +38,7 @@ func CmdKeys(w http.ResponseWriter, r *http.Request) {
 		Value: "PORRROOO",
 	}
 	myJson, _ := json.Marshal(data)
-	fmt.Println(string(myJson))
+	w.Write(myJson)
 }
 
 func CmdGetKey(w http.ResponseWriter, r *http.Request) {
