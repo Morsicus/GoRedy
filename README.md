@@ -1,1 +1,1 @@
-# GoReadi
+# GoRedy
