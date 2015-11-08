@@ -17,11 +17,6 @@ type redisEntry struct {
 	Value  string `json:"value"`
 }
 
-type redisConfiguration struct {
-	IpAddr string
-	Port   int
-}
-
 func errHandler(err error) {
 	if err != nil {
 		fmt.Println("error:", err)
@@ -48,14 +43,8 @@ func CmdKeys(w http.ResponseWriter, r *http.Request) {
 }
 
 func CmdGetKey(w http.ResponseWriter, r *http.Request) {
-	file, _ := os.Open("redis_conf.json")
-	defer file.Close()
-	decoder := json.NewDecoder(file)
-	conf := redisConfiguration{}
-	err := decoder.Decode(&conf)
-	if err != nil {
-		fmt.Println("Error : ", err)
-	}
+	conf := RedisConfiguration{}
+	conf.New()
 
 	vars := mux.Vars(r)
 	key := vars["key"]
