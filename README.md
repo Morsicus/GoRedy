@@ -9,3 +9,11 @@ Create a file named `redis_conf.json` as:
 	"Port": 32769
 }
 ```
+
+# JSON output
+```bash
+# string
+$ curl http://127.0.0.1/cmd/get/$myKey
+{"key":"myKey","value":"myValue"}
+
+```
