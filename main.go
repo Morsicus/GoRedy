@@ -45,14 +45,14 @@ func CmdGetKey(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	key := vars["key"]
 
-	c, err := redis.DialTimeout("tcp", "172.17.0.2:6379", time.Duration(10)*time.Second)
+	c, err := redis.DialTimeout("tcp", "192.168.99.100:32769", time.Duration(10)*time.Second)
 	errHandler(err)
 	defer c.Close()
 
 	res, err := c.Cmd("get", key).Str()
 	errHandler(err)
-
-	fmt.Println(res)
+    
+    w.Write([]byte(res))
 }
 
 func main() {
