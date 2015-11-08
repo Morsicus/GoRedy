@@ -5,6 +5,7 @@ import (
 	"os"
 	"log"
 	"time"
+	"strconv"
 	"net/http"
 	"encoding/json"
 	"github.com/fzzy/radix/redis"
@@ -14,6 +15,11 @@ import (
 type redisEntry struct {
 	Key    string `json:"key"`
 	Value  string `json:"value"`
+}
+
+type redisConfiguration struct {
+	IpAddr string
+	Port   int
 }
 
 func errHandler(err error) {
@@ -42,6 +48,18 @@ func CmdKeys(w http.ResponseWriter, r *http.Request) {
 }
 
 func CmdGetKey(w http.ResponseWriter, r *http.Request) {
+	file, _ := os.Open("redis_conf.json")
+	defer file.Close()
+	decoder := json.NewDecoder(file)
+	conf := redisConfiguration{}
+	err := decoder.Decode(&conf)
+	if err != nil {
+		fmt.Println("Error : ", err)
+	}
+
+	fmt.Println(conf.IpAddr)
+	fmt.Println(conf.Port)
+
 	vars := mux.Vars(r)
 	key := vars["key"]
 
