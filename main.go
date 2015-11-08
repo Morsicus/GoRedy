@@ -39,7 +39,7 @@ func CmdKeys(w http.ResponseWriter, r *http.Request) {
 		Value: "PORRROOO",
 	}
 	myJson, _ := json.Marshal(data)
-	w.Write(myJson)
+	w.Write(myJson)	
 }
 
 func CmdGetKey(w http.ResponseWriter, r *http.Request) {
@@ -56,7 +56,12 @@ func CmdGetKey(w http.ResponseWriter, r *http.Request) {
 	res, err := c.Cmd("get", key).Str()
 	errHandler(err)
 
-    w.Write([]byte(res))
+	data := &redisEntry{
+		Key: key,
+		Value: res,
+	}
+	res_json, _ := json.Marshal(data)
+	w.Write(res_json)
 }
 
 func main() {
