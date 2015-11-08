@@ -34,12 +34,24 @@ func Index(w http.ResponseWriter, r *http.Request) {
 }
 
 func CmdKeys(w http.ResponseWriter, r *http.Request) {
-	data := &redisEntry{
-		Key: "Yolo",
-		Value: "PORRROOO",
-	}
-	myJson, _ := json.Marshal(data)
-	w.Write(myJson)	
+	conf := RedisConfiguration{}
+	conf.New()
+
+	vars := mux.Vars(r)
+	regEx := vars["regEx"]
+
+	c, err := redis.DialTimeout("tcp", conf.IpAddr + ":" + strconv.Itoa(conf.Port), time.Duration(10)*time.Second)
+	errHandler(err)
+	defer c.Close()
+
+	res, err := c.Cmd("keys", regEx).List()
+	errHandler(err)
+	/*allKeysWithPattern := []string{}
+	for _, key := range res {
+		append(allKeysWithPattern, keys)
+	}*/
+	res_json, _ := json.Marshal(res)
+	w.Write(res_json)
 }
 
 func CmdGetKey(w http.ResponseWriter, r *http.Request) {
