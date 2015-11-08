@@ -57,19 +57,16 @@ func CmdGetKey(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("Error : ", err)
 	}
 
-	fmt.Println(conf.IpAddr)
-	fmt.Println(conf.Port)
-
 	vars := mux.Vars(r)
 	key := vars["key"]
 
-	c, err := redis.DialTimeout("tcp", "192.168.99.100:32769", time.Duration(10)*time.Second)
+	c, err := redis.DialTimeout("tcp", conf.IpAddr + ":" + strconv.Itoa(conf.Port), time.Duration(10)*time.Second)
 	errHandler(err)
 	defer c.Close()
 
 	res, err := c.Cmd("get", key).Str()
 	errHandler(err)
-    
+
     w.Write([]byte(res))
 }
 
